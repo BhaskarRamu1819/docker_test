@@ -1,0 +1,77 @@
+##RULES SHOULD FOLLOW:
+##  exe path should follow this path - "C:/Users/bhask/Downloads/gitlab_deploy_exe/final_exe"
+##  exe name should follow this name - "run_um_created.exe"
+#
+#stages:
+#    - build
+#    - set_location_and_deploy
+##    - deploy
+#build:
+#    stage: build
+#    tags:
+#        - local_test
+#    script:
+#      - python -v
+#      - python -m venv .venv
+#      - .venv\Scripts\activate
+#      - pip install -r requirements.txt
+#      - pip install pyinstaller
+#      - pyinstaller --onefile run.py
+##      - cd dist
+##      - REN run.exe "run_um_created.exe"
+#    rules:
+#        - if: $CI_COMMIT_TAG
+#    artifacts:
+#        paths:
+#            - dist/*.exe
+#        expire_in: 30 minutes
+#        name: "$CI_COMMIT_TAG"
+#
+#
+#set_location_and_deploy_production:
+#    stage: set_location_and_deploy
+#    tags:
+#      - deploy_test
+#    before_script:
+#      - cd "C:/Users/bhask/Downloads/gitlab_deploy_exe/final_exe"
+#      - |
+#         $processName="run_um_created"
+#         $runningProcesses = Get-Process | Where-Object {$_.Name -eq $processName}
+#         if ($runningProcesses.Count -gt 0) {
+#            Stop-Process -Name $processName -Confirm:$false
+#            Write-Host "Stopped process: $processName"}
+#         else {
+#            Write-Host "Process not running: $processName"
+#         }
+#      - Move-Item -path "C:\Users\bhask\Downloads\gitlab_deploy_exe\final_exe\run_um_created.exe" -Destination "C:/Users/bhask/Downloads/gitlab_deploy_exe/run_um_created.exe" -Force
+#        # Rename the exe with exe modified datetime
+#      - cd ..
+#      - |
+#          $fileName = "run_um_created.exe"
+#          $file = Get-Item $fileName
+#          $modifiedDate = $file.LastWriteTime
+#          echo $modifiedDate
+#          $date = $modifiedDate.ToString("yyyy-MM-dd_HH-mm-ss")
+#          REN run_um_created.exe "run_um_$date.exe"
+##        $date = Get-Date -Format yyyy-MM-dd_HH-mm-ss
+##        REN run_um_created.exe "run_um_$date.exe"
+#    script:
+#        - cd "C:\Program Files\GitLab-Runner\builds\4Z2kM3ym\0\machstatz_customer_projects\devs\bhaskar_stuffs\gitlab_runner_test\dist"
+#        - Copy-Item -Path "C:\Program Files\GitLab-Runner\builds\4Z2kM3ym\0\machstatz_customer_projects\devs\bhaskar_stuffs\gitlab_runner_test\dist\*" -Destination "C:/Users/bhask/Downloads/gitlab_deploy_exe/final_exe" -Recurse -Force
+#        - cd "C:/Users/bhask/Downloads/gitlab_deploy_exe/final_exe"
+#        - REN run.exe run_um_created.exe
+#        - powershell Start-Process -FilePath "C:/Users/bhask/Downloads/gitlab_deploy_exe/final_exe/run_um_created.exe"
+#    dependencies:
+#        - build
+#    rules:
+#        - if: $CI_COMMIT_TAG
+#
+#
+##deploy_production:
+##    stage: deploy
+##    tags:
+##      - deploy_test
+##    script:
+##      - powershell Start-Process -FilePath "C:/Users/bhask/Downloads/gitlab_deploy_exe/final_exe/run_um_created.exe"
+##    rules:
+##        - if: $CI_COMMIT_TAG
