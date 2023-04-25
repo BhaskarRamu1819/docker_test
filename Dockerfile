@@ -6,5 +6,5 @@ RUN pip install -r requirements.txt
 COPY . /app
 WORKDIR /app
 ADD flask_rest_apis .
-ADD flask_rest_apis.py .
-CMD ["python", "flask_rest_apis.py"]
+ADD run.py .
+CMD ["python", "run.py"]
